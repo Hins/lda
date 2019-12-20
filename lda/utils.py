@@ -55,20 +55,26 @@ def matrix_to_lists(doc_word):
     if sparse and not np.issubdtype(doc_word.dtype, int):
         raise ValueError("expected sparse matrix with integer values, found float values")
 
+    logger.info("doc_word = {}".format(doc_word))
     ii, jj = np.nonzero(doc_word)
     if sparse:
         ss = tuple(doc_word[i, j] for i, j in zip(ii, jj))
     else:
         ss = doc_word[ii, jj]
+    logger.info("ii = {}".format(ii))
+    logger.info("jj = {}".format(jj))
 
     n_tokens = int(doc_word.sum())
     DS = np.repeat(ii, ss).astype(np.intc)
     WS = np.empty(n_tokens, dtype=np.intc)
     startidx = 0
+    logger.info("ss = {}".format(ss))
     for i, cnt in enumerate(ss):
         cnt = int(cnt)
         WS[startidx:startidx + cnt] = jj[i]
         startidx += cnt
+    logger.info("WS = {}".format(WS))
+    logger.info("DS = {}".format(DS))
     return WS, DS
 
 

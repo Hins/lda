@@ -267,11 +267,15 @@ class LDA:
         logger.info("n_topics: {}".format(n_topics))
         logger.info("n_iter: {}".format(n_iter))
 
+        # topic-word distribution, shape is [topic category size, word category size], (i,j) meant i-th topic j-th word's count
         self.nzw_ = nzw_ = np.zeros((n_topics, W), dtype=np.intc)
+        # document-topic distribution, shape is [document size, topic category size], (i,j) meant i-th document j-th topic's count
         self.ndz_ = ndz_ = np.zeros((D, n_topics), dtype=np.intc)
+        # topic distribution, shape is [topic category size], (i) meant i-th topic's count
         self.nz_ = nz_ = np.zeros(n_topics, dtype=np.intc)
 
         self.WS, self.DS = WS, DS = lda.utils.matrix_to_lists(X)
+        # topic-word value, shape is [word sum size]
         self.ZS = ZS = np.empty_like(self.WS, dtype=np.intc)
         np.testing.assert_equal(N, len(WS))
         for i in range(N):
